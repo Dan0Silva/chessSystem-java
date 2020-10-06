@@ -18,9 +18,27 @@ public class Program {
 		ChessMatch cm = new ChessMatch();
 		List<ChessPiece> captured = new ArrayList<>();
 		
+		int cc = 0;
+		
+		WinnerCont winner = new WinnerCont();
+		
 		while (!cm.getCheckMate()) {
 			try {
+				if(cc == 0) {
+					UI.clearScreen();
+					System.out.println("Enter a name of player white: ");
+					String nameWhite = sc.nextLine();
+					System.out.println();
+					System.out.println("Enter a name of player black: ");
+					String nameBlack = sc.nextLine();
+					
+					cm.inNameWhite(nameWhite);
+					cm.inNameBlack(nameBlack);
+					
+					cc = 232;
+				}
 				UI.clearScreen();
+				
 				UI.printMatch(cm, captured);
 				System.out.println();
 				System.out.print("Source: ");
@@ -49,6 +67,7 @@ public class Program {
 					}
 					cm.replacePromotedPiece(type);
 				}
+
 			}
 			catch(ChessException e) {
 				System.out.println(e.getMessage());

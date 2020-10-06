@@ -13,6 +13,7 @@ import chess.pieces.Knight;
 import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
+import application.WinnerCont;
 
 public class ChessMatch {
 
@@ -23,7 +24,10 @@ public class ChessMatch {
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
 	private ChessPiece promoted;
-
+	
+	WinnerCont winner = new WinnerCont();
+	private String nameWin, nameWhite, nameBlack;
+	
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
 
@@ -56,6 +60,14 @@ public class ChessMatch {
 
 	public ChessPiece getPromoted() {
 		return promoted;
+	}
+	
+	public void inNameWhite(String name) {
+		this.nameWhite = name;
+	}
+	
+	public void inNameBlack(String name) {
+		this.nameBlack = name;
 	}
 
 	public ChessPiece[][] getPieces() {
@@ -148,7 +160,7 @@ public class ChessMatch {
 		p.increaseMoveCount();
 		Piece capturedPiece = board.removePiece(target);
 		board.placePiece(p, target);
-
+		
 		if (capturedPiece != null) {
 			piecesOnTheBoard.remove(capturedPiece);
 			capturedPieces.add(capturedPiece);
@@ -286,7 +298,7 @@ public class ChessMatch {
 		return false;
 	}
 
-	private boolean testCheckMate(Color color) {
+	private boolean testCheckMate(Color color) { 		//cor do oponente 
 		if (!testCheck(color)) {
 			return false;
 		}
@@ -310,6 +322,18 @@ public class ChessMatch {
 				}
 			}
 		}
+		
+		//WinnerCont config
+		
+		winner.WinColor(opponent(color));
+		winner.WinCont(turn);
+		if(winner.getColor() == Color.WHITE) {
+			winner.setName(nameWhite);
+		} else if(winner.getColor() == Color.BLACK) {
+			winner.setName(nameBlack);
+		}
+		winner.generateTxtFile();
+		
 		return true;
 	}
 
